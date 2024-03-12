@@ -35,6 +35,12 @@ public class UserBoImpl implements UserBo {
 
     @Override
     public ArrayList<Userdto> getAllUsers() throws SQLException {
-        return null;
+        ArrayList<User> all = userDao.getAll();
+        ArrayList<Userdto> allUserDetails = new ArrayList<>();
+        for(User u : all){
+            allUserDetails.add(new Userdto(u.getUserId(), u.getUserName(), u.getPassword(), u.getTitle()));
+        }
+        return allUserDetails;
+    }
     }
 }
