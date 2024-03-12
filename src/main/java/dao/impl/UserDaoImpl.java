@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean add(User entity) throws SQLException {
-        return false;
+        return SqlUtil.execute("INSERT INTO User(userId, userName, password, title) VALUES(?, ?, ?, ?)", entity.getUserId(), entity.getUserName(), entity.getPassword(), entity.getTitle());
     }
 
     @Override
