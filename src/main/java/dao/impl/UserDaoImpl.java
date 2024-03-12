@@ -16,7 +16,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean update(User entity) throws SQLException {
-        return false;
+        return SqlUtil.execute("UPDATE user SET userName = ?, password = ?, title = ? WHERE userId = ?", entity.getUserName(), entity.getPassword(), entity.getTitle(), entity.getUserId());
     }
 
     @Override
