@@ -19,17 +19,18 @@ public class UserBoImpl implements UserBo {
 
     @Override
     public boolean updateUser(Userdto dto) throws SQLException {
-        return false;
-    }
-
-    @Override
-    public boolean addUser(Userdto dto) throws SQLException {
         return userDao.update(new User(dto.getId(), dto.getName(), dto.getPassword(), dto.getTitle()));
     }
 
     @Override
+    public boolean addUser(Userdto dto) throws SQLException {
+        return userDao.add(new User(dto.getId(), dto.getName(), dto.getPassword(), dto.getTitle()));
+    }
+
+    @Override
     public Userdto searchUser(String id) throws SQLException {
-        return null;
+        User u = userDao.search(id);
+        return new Userdto(u.getUserId(), u.getUserName(), u.getPassword(), u.getTitle());
     }
 
     @Override
