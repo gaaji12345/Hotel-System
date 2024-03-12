@@ -36,7 +36,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public ArrayList<User> getAll() throws SQLException {
-        return null;
+        ArrayList<User> allUserDetails = new ArrayList<>();
+        ResultSet rst = SqlUtil.execute("SELECT * FROM user");
+        while (rst.next()) {
+            allUserDetails.add(new User(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4)));
+        }
+        return allUserDetails;
     }
 
     @Override
