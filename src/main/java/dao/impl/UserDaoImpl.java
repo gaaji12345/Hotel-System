@@ -4,6 +4,7 @@ import dao.custom.UserDao;
 import dao.util.SqlUtil;
 import entity.User;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -26,6 +27,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User search(String id) throws SQLException {
+        ResultSet rst = SqlUtil.execute("SELECT * FROM user WHERE userId = ?", id);
+        if(rst.next()) {
+            return new User(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4));
+        }
         return null;
     }
 
