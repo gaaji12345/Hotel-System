@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.sql.SQLException;
@@ -32,6 +33,10 @@ public class UserController {
     UserBo userBo=new UserBoImpl();
 
     public void initialize() {
+        cblid.setCellValueFactory(new PropertyValueFactory<>("id"));
+        cblName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cblPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+        cblpos.setCellValueFactory(new PropertyValueFactory<>("title"));
    
         loadallusers();
       
