@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.sql.SQLException;
@@ -34,6 +35,10 @@ public class RoomForm {
     RoomBo roomBo=new RoomBoImpl();
 
     public  void initialize(){
+        cblid.setCellValueFactory(new PropertyValueFactory<>("id"));
+        cblDetail.setCellValueFactory(new PropertyValueFactory<>("details"));
+        cblType.setCellValueFactory(new PropertyValueFactory<>("roomType"));
+        cblPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         loadAllrooms();
 
     }
