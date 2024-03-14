@@ -87,5 +87,17 @@ public class UserController {
     }
 
     public void deleteOn(ActionEvent actionEvent) {
+
+        String id = txtId.getText();
+        try {
+            boolean isDeleted = userBo.deleteUser(id);
+            if (isDeleted) {
+                new Alert(Alert.AlertType.CONFIRMATION, "deleted!").show();
+                loadallusers();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "something went wrong!").show();
+        }
+
     }
 }
