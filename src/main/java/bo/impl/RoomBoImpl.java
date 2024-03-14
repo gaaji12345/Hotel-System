@@ -25,7 +25,7 @@ public class RoomBoImpl  implements RoomBo {
 
     @Override
     public boolean addRoom(Roomdto dto) throws SQLException {
-        return false;
+        return roomDao.add(new Room(dto.getId(), dto.getDetails(), dto.getRoomType(), dto.getPrice()));
     }
 
     @Override
