@@ -84,6 +84,23 @@ public class UserController {
     }
 
     public void updateON(ActionEvent actionEvent) {
+        String id = txtId.getText();
+        String name = txtName.getText();
+        String password =txtPassword.getText();
+        String title = txtPosstion.getText();
+
+        //validateFields(id, name, password, title);
+
+        try {
+            boolean isUpdated = userBo.updateUser(new Userdto(id, name, password, title));
+            if(isUpdated) {
+                new Alert(Alert.AlertType.CONFIRMATION, "User updated!").show();
+                loadallusers();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "something went wrong!").show();
+        }
     }
 
     public void deleteOn(ActionEvent actionEvent) {
