@@ -88,9 +88,35 @@ public class RoomForm {
     }
 
     public void updateOnAc(ActionEvent actionEvent) {
+        String id = txtId.getText();
+        String details = txtdetail.getText();
+        String roomType =txtType.getText();
+        Double price = Double.parseDouble(txtPrice.getText());
+
+        try {
+            boolean isUpdated = roomBo.updateRoom(new Roomdto(id, details, roomType, price));
+            if (isUpdated){
+                new Alert(Alert.AlertType.CONFIRMATION, "Room updated!").show();
+                loadAllrooms();
+            }
+            new Alert(Alert.AlertType.CONFIRMATION, "Room updated!").show();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "something went wrong!").show();
+        }
     }
 
     public void deleteOnAc(ActionEvent actionEvent) {
+        String id = txtId.getText();
+        try {
+            boolean isDeleted = roomBo.deleteRoom(id);
+            if (isDeleted) {
+                new Alert(Alert.AlertType.CONFIRMATION, "deleted!").show();
+                loadAllrooms();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "something went wrong!").show();
+        }
     }
 
     public void clearOnAc(ActionEvent actionEvent) {
