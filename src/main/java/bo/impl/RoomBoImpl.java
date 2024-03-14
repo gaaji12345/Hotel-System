@@ -30,7 +30,8 @@ public class RoomBoImpl  implements RoomBo {
 
     @Override
     public Roomdto searchRoom(String id) throws SQLException {
-        return null;
+        Room r = roomDao.search(id);
+        return new Roomdto(r.getId(), r.getDetails(), r.getRoomType(), r.getPrice());
     }
 
     @Override
