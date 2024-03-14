@@ -117,4 +117,20 @@ public class UserController {
         }
 
     }
+
+    public void search_onAc(ActionEvent actionEvent) {
+        try {
+            Userdto userDTO = userBo.searchUser(txtId.getText());
+            if (userDTO != null) {
+                txtId.setText(userDTO.getId());
+                txtName.setText(userDTO.getName());
+                txtPassword.setText(userDTO.getPassword());
+                txtPosstion.setText(userDTO.getTitle());
+            }else{
+                new Alert(Alert.AlertType.ERROR, "user not found!").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "something happened!").show();
+        }
+    }
 }
