@@ -4,6 +4,7 @@ import bo.custom.RoomBo;
 import dao.custom.RoomDao;
 import dao.impl.RoomDaiImpl;
 import dto.Roomdto;
+import entity.Room;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class RoomBoImpl  implements RoomBo {
 
     @Override
     public boolean updateRoom(Roomdto dto) throws SQLException {
-        return false;
+        return roomDao.update(new Room(dto.getId(), dto.getDetails(), dto.getRoomType(), dto.getPrice()));
     }
 
     @Override
