@@ -3,9 +3,11 @@ package bo.impl;
 import bo.custom.RoomBo;
 import dao.custom.RoomDao;
 import dao.impl.RoomDaiImpl;
+import db.DBConnection;
 import dto.Roomdto;
 import entity.Room;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -36,16 +38,27 @@ public class RoomBoImpl  implements RoomBo {
 
     @Override
     public ArrayList<Roomdto> getAllRooms() throws SQLException {
-        return null;
+        ArrayList<Room> all = roomDao.getAll();
+        ArrayList<Roomdto> allRoomDetails = new ArrayList<>();
+        for(Room r : all){
+            allRoomDetails.add(new Roomdto(r.getId(), r.getDetails(), r.getRoomType(), r.getPrice()));
+        }
+        return allRoomDetails;
     }
 
     @Override
     public String generateNewRoomID() throws SQLException, ClassNotFoundException {
-        return null;
+        return roomDao.generateNewID();
     }
 
     @Override
     public void releaseRoom(String roomId, String release) throws SQLException {
+        String sql = "UPDATE room SET roomDetails = ? WHERE roomId = ?";
+
+        PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
+        pstm.setString(1, release);
+        pstm.setString(2, roomId);
+        pstm.executeUpdate();
 
     }
 }
