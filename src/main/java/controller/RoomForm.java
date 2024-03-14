@@ -40,7 +40,24 @@ public class RoomForm {
         cblType.setCellValueFactory(new PropertyValueFactory<>("roomType"));
         cblPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         loadAllrooms();
+        setSelectToTxt();
+        initUI();
 
+    }
+
+    private void initUI() {
+        txtPrice.setOnAction(event -> btnSave.fire());
+    }
+
+    private void setSelectToTxt() {
+        tblMain.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                txtId.setText(newSelection.getId());
+                txtdetail.setText(newSelection.getDetails());
+                txtType.setText(newSelection.getRoomType());
+                txtPrice.setText(String.valueOf(newSelection.getPrice()));
+            }
+        });
     }
 
     private void loadAllrooms() {
@@ -64,6 +81,17 @@ public class RoomForm {
     }
 
     public void search_OnAc(ActionEvent actionEvent) {
+        try {
+            Roomdto roomDTO = roomBo.searchRoom(txtId.getText());
+            if (roomDTO != null) {
+                txtId.setText(roomDTO.getId());
+                txtdetail.setText(roomDTO.getDetails());
+                txtType.setText(roomDTO.getRoomType());
+                txtPrice.setText(String.valueOf(roomDTO.getPrice()));
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "something happened!").show();
+        }
     }
 
     public void saveOnAc(ActionEvent actionEvent) {
@@ -120,5 +148,9 @@ public class RoomForm {
     }
 
     public void clearOnAc(ActionEvent actionEvent) {
+        txtId.clear();
+        txtPrice.clear();
+        txtdetail.clear();
+        txtType.clear();
     }
 }
