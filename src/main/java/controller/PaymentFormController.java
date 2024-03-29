@@ -9,12 +9,16 @@ import bo.impl.GuestBoImpl;
 import bo.impl.PaymentBoImpl;
 import bo.impl.RoomBoImpl;
 import db.DBConnection;
+import dto.Bookingdto;
+import dto.Guestdto;
 import dto.PaymentDto;
+import dto.Roomdto;
 import dto.tm.PaymentTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -22,6 +26,8 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class PaymentFormController {
@@ -54,6 +60,15 @@ public class PaymentFormController {
     GuesBo guestBO = new GuestBoImpl();
 
     public void initialize() {
+        cblPId.setCellValueFactory(new PropertyValueFactory<>("paymentId"));
+        cblGid.setCellValueFactory(new PropertyValueFactory<>("guestId"));
+        cblGname.setCellValueFactory(new PropertyValueFactory<>("guestName"));
+        cblBid.setCellValueFactory(new PropertyValueFactory<>("resId"));
+        cblRId.setCellValueFactory(new PropertyValueFactory<>("roomId"));
+        cblChkIn.setCellValueFactory(new PropertyValueFactory<>("checkIn"));
+        cblChkOut.setCellValueFactory(new PropertyValueFactory<>("checkOut"));
+        cblAmonut.setCellValueFactory(new PropertyValueFactory<>("orderAm"));
+        cblTota.setCellValueFactory(new PropertyValueFactory<>("total"));
         getAllPayments();
         setValueFactory();
         setSelectToTxt();
@@ -137,6 +152,30 @@ public class PaymentFormController {
     }
 
     public void update_OnAction(ActionEvent actionEvent) {
+        String paymentId = txtPyamentId.getText();
+        String guestId = lblGId.getText();
+        String guestName = lblGname.getText();
+        String reservationId = txtBookingId.getText();
+        String roomId = lblRId.getText();
+        String checkinDate = lblChkIn.getText();
+        String checkoutDate = lblchkOut.getText();
+        Double ordersAm = Double.valueOf(lblOAmount.getText());
+        Double totalPrice = Double.valueOf(lblTotPrice.getText());
+
+        try {
+            boolean isUpdated = paymentBO.updatePayment(new PaymentDto(paymentId,guestId,guestName,reservationId,roomId,checkinDate,checkoutDate,ordersAm,totalPrice));
+            if(isUpdated){
+                new Alert(Alert.AlertType.CONFIRMATION, "Payment updated!").show();
+                getAllPayments();
+                setValueFactory();
+            }
+            else {
+                new Alert(Alert.AlertType.ERROR, "Payment Id Not Exist!").show();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Please Check Details & Try Again!").show();
+        }
     }
 
     public void delete_OnaCTION(ActionEvent actionEvent) {
@@ -155,5 +194,57 @@ public class PaymentFormController {
             new Alert(Alert.AlertType.ERROR, "Please Check Details & Try Again!").show();
            // clearTxt();
         }
+    }
+
+    public void txtSearch_onAction(ActionEvent actionEvent) {
+        resOnAction();
+    }
+
+    private void resOnAction() {
+        String id = txtBookingId.getText();
+        try {
+            Bookingdto res = bookingBO.searchBooking(id);
+            Double orderAm = getOrderAmmount(id);
+
+            LocalDate checkIn = LocalDate.parse(res.getCheckIn());
+            LocalDate checkOut = LocalDate.parse(res.getCheckOut());
+            Roomdto roomDTO = roomBO.searchRoom(res.getRoomId());
+            Double price = Double.valueOf(roomDTO.getPrice());
+            Double roomPrice = calculateRoomPrice(checkIn,checkOut,price);
+            Guestdto guestDTO = guestBO.searchGuest(res.getGuestId());
+            Double finalAmmount = orderAm+roomPrice;
+            fillResFields(res,orderAm,finalAmmount, guestDTO);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "SQL Error!").show();
+        }
+    }
+
+    private void fillResFields(Bookingdto res, Double orderAm, Double finalAmmount, Guestdto guestDTO) {
+        lblGId.setText(res.getGuestId());
+        lblRId.setText(res.getRoomId());
+        lblGname.setText(guestDTO.getName());
+        lblChkIn.setText(res.getCheckIn());
+        lblchkOut.setText(res.getCheckOut());
+        lblOAmount.setText(String.valueOf(orderAm));
+        lblTotPrice.setText(String.valueOf(finalAmmount));
+    }
+
+    private Double calculateRoomPrice(LocalDate checkIn, LocalDate checkOut, Double price) {
+        long days = ChronoUnit.DAYS.between(checkIn, checkOut);
+        return price * days;
+    }
+
+    private Double getOrderAmmount(String id) {
+        Double orderAmmount = 0.0;
+        try {
+            orderAmmount = paymentBO.getOrderAmount(id);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "SQL Error!").show();
+        }
+        return orderAmmount;
     }
 }
