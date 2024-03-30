@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="722.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PaymentFormController">
+   <children>
+      <TextField fx:id="txtPyamentId" layoutX="94.0" layoutY="40.0" prefHeight="26.0" prefWidth="211.0" promptText="PAYEMENT-ID" />
+      <TextField fx:id="txtBookingId" layoutX="448.0" layoutY="40.0" onAction="#txtSearch_onAction" prefHeight="26.0" prefWidth="211.0" promptText="BOOKIN-ID" />
+      <Label fx:id="lblGId" layoutX="130.0" layoutY="118.0" prefHeight="32.0" prefWidth="166.0" />
+      <Label fx:id="lblGname" layoutX="144.0" layoutY="168.0" prefHeight="32.0" prefWidth="166.0" />
+      <Label fx:id="lblRId" layoutX="502.0" layoutY="108.0" prefHeight="32.0" prefWidth="166.0" />
+      <Label fx:id="lblChkIn" layoutX="157.0" layoutY="212.0" prefHeight="32.0" prefWidth="166.0" />
+      <Label layoutX="22.0" layoutY="118.0" prefHeight="32.0" prefWidth="89.0" text="Guest-ID">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTotPrice" layoutX="508.0" layoutY="222.0" prefHeight="32.0" prefWidth="166.0" />
+      <Label fx:id="lblOAmount" layoutX="215.0" layoutY="266.0" prefHeight="32.0" prefWidth="166.0" />
+      <Label fx:id="lblchkOut" layoutX="502.0" layoutY="168.0" prefHeight="32.0" prefWidth="166.0" />
+      <Label layoutX="377.0" layoutY="108.0" prefHeight="32.0" prefWidth="89.0" text="ROOM-ID">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="374.0" layoutY="222.0" prefHeight="32.0" prefWidth="106.0" text="TOT-PRICE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="22.0" layoutY="168.0" prefHeight="32.0" prefWidth="106.0" text="GST-NAME">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="22.0" layoutY="212.0" prefHeight="32.0" prefWidth="106.0" text="CHK-IN">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="378.0" layoutY="168.0" prefHeight="32.0" prefWidth="97.0" text="CHK-OUT">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="23.0" layoutY="266.0" prefHeight="32.0" prefWidth="176.0" text="ORDERS-AMOUNT">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnSave" layoutX="448.0" layoutY="323.0" mnemonicParsing="false" onAction="#save_OnAction" prefHeight="26.0" prefWidth="89.0" text="SAVE" />
+      <Button fx:id="btnUpdate" layoutX="547.0" layoutY="323.0" mnemonicParsing="false" onAction="#update_OnAction" prefHeight="26.0" prefWidth="89.0" text="UPDATE" />
+      <Button fx:id="btnDelete" layoutX="651.0" layoutY="323.0" mnemonicParsing="false" onAction="#delete_OnaCTION" prefHeight="26.0" prefWidth="89.0" text="DELETE" />
+      <TableView fx:id="tblMain" layoutX="14.0" layoutY="448.0" prefHeight="200.0" prefWidth="745.0">
+        <columns>
+          <TableColumn fx:id="cblPId" prefWidth="75.0" text="P-ID" />
+          <TableColumn fx:id="cblBid" prefWidth="75.0" text="B-ID" />
+            <TableColumn fx:id="cblGid" prefWidth="75.0" text="G-ID" />
+            <TableColumn fx:id="cblRId" prefWidth="75.0" text="R-ID" />
+            <TableColumn fx:id="cblGname" prefWidth="91.0" text="G-NAME" />
+            <TableColumn fx:id="cblChkIn" prefWidth="91.0" text="C-IN" />
+            <TableColumn fx:id="cblChkOut" prefWidth="91.0" text="C-OUT" />
+            <TableColumn fx:id="cblAmonut" prefWidth="91.0" text="O-AMOUNT" />
+            <TableColumn fx:id="cblTota" prefWidth="79.0" text="TOTAL" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

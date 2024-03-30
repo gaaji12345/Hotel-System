@@ -9,7 +9,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="435.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
    <children>
       <ImageView fx:id="root" fitHeight="435.0" fitWidth="614.0" pickOnBounds="true">
@@ -18,9 +17,8 @@
          </image>
       </ImageView>
       <TextField fx:id="txtUserName" layoutX="179.0" layoutY="192.0" prefHeight="26.0" prefWidth="242.0" promptText="UserName" />
-      <TextField fx:id="txtpassword" layoutX="179.0" layoutY="230.0" onMouseClicked="#pw_OnAction" prefHeight="26.0" prefWidth="242.0" />
       <ComboBox fx:id="cmbPostions" layoutX="207.0" layoutY="140.0" prefHeight="32.0" prefWidth="168.0" promptText="Postions" />
-      <Button fx:id="btnLogin" layoutX="244.0" layoutY="271.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Login" />
+      <Button fx:id="btnLogin" layoutX="244.0" layoutY="271.0" mnemonicParsing="false" onAction="#login_OnAction" prefHeight="26.0" prefWidth="100.0" text="Login" />
       <PasswordField fx:id="txtPassFld" layoutX="179.0" layoutY="230.0" prefHeight="26.0" prefWidth="242.0" />
       <CheckBox fx:id="chkBox" layoutX="431.0" layoutY="234.0" mnemonicParsing="false" onMouseClicked="#chk_boxOnAction" />
    </children>

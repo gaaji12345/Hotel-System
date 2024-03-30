@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="722.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GuestFormController">
+   <children>
+      <TextField fx:id="txtUId" layoutX="184.0" layoutY="79.0" prefHeight="26.0" prefWidth="413.0" promptText="USER" />
+      <TextField fx:id="txtGid" layoutX="184.0" layoutY="113.0" onAction="#txtSerach_OnAc" prefHeight="26.0" prefWidth="413.0" promptText="ID" />
+      <TextField fx:id="txtName" layoutX="184.0" layoutY="146.0" prefHeight="26.0" prefWidth="413.0" promptText="FULLNAME" />
+      <TextField fx:id="txtPasport" layoutX="184.0" layoutY="296.0" prefHeight="26.0" prefWidth="413.0" promptText="PASSPORT-ID" />
+      <TextField fx:id="txtCountry" layoutX="184.0" layoutY="226.0" prefHeight="26.0" prefWidth="413.0" promptText="COUNTRY" />
+      <TextField fx:id="txtZip" layoutX="184.0" layoutY="261.0" prefHeight="26.0" prefWidth="413.0" promptText="ZIPCODE" />
+      <CheckBox fx:id="chkMale" layoutX="365.0" layoutY="190.0" mnemonicParsing="false" text="Male" />
+      <CheckBox fx:id="chkFenale" layoutX="456.0" layoutY="190.0" mnemonicParsing="false" text="Female" />
+      <Label layoutX="197.0" layoutY="186.0" prefHeight="26.0" prefWidth="143.0" text="GENDER :-">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnSave" layoutX="338.0" layoutY="330.0" mnemonicParsing="false" onAction="#save_OnAction" prefHeight="26.0" prefWidth="63.0" text="Save" />
+      <Button fx:id="btnDelte" layoutX="415.0" layoutY="330.0" mnemonicParsing="false" onAction="#delet_OnAction" prefHeight="26.0" prefWidth="63.0" text="Delete" />
+      <Button fx:id="btnUpdate" layoutX="494.0" layoutY="330.0" mnemonicParsing="false" onAction="#update_OnAction" prefHeight="26.0" prefWidth="63.0" text="Update" />
+      <TableView fx:id="tblMain" layoutX="18.0" layoutY="433.0" prefHeight="200.0" prefWidth="747.0">
+        <columns>
+          <TableColumn fx:id="cblUId" prefWidth="79.0" text="UID" />
+          <TableColumn fx:id="cblGid" prefWidth="103.0" text="GID" />
+            <TableColumn fx:id="cblFname" prefWidth="121.0" text="FNAME" />
+            <TableColumn fx:id="cblGender" prefWidth="79.0" text="GENDER" />
+            <TableColumn fx:id="cblCountry" prefWidth="119.0" text="COUNTRY" />
+            <TableColumn fx:id="cblZip" prefWidth="135.0" text="ZIP" />
+            <TableColumn fx:id="cblPassport" prefWidth="109.0" text="PASSPORT" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
