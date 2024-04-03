@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FoodFormController {
     public AnchorPane root;
@@ -94,15 +96,21 @@ public class FoodFormController {
             String details =txtDesc.getText();
             Double price = Double.parseDouble(txtPrice.getText());
 
-            if (id.isEmpty() || name.isEmpty() || details.isEmpty()) {
-                throw new IllegalArgumentException("Please fill out all the required fields!");
-            }
+            boolean isvalid=validateFood();
+             if (isvalid) {
 
-            boolean isSaved = foodBo.addFood(new Fooddto(id, name, details, price));
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Food saved!").show();
-              getAllFoods();
-            }
+                 if (id.isEmpty() || name.isEmpty() || details.isEmpty()) {
+                     throw new IllegalArgumentException("Please fill out all the required fields!");
+                 }
+
+                 boolean isSaved = foodBo.addFood(new Fooddto(id, name, details, price));
+                 if (isSaved) {
+                     new Alert(Alert.AlertType.CONFIRMATION, "Food saved!").show();
+                     getAllFoods();
+                 }
+             }else {
+                 new Alert(Alert.AlertType.ERROR,"Enter right details").show();
+             }
         } catch (IllegalArgumentException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         } catch (SQLException e) {
@@ -144,5 +152,25 @@ public class FoodFormController {
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "something went wrong!").show();
         }
+    }
+
+    private boolean validateFood() {
+        String id_value=txtId.getText();
+        Pattern complie=Pattern.compile("[C][0-9]{3}");
+        Matcher matcher=complie.matcher(id_value);
+        boolean matches=matcher.matches();
+        if (!matches){
+            new Alert(Alert.AlertType.ERROR,"INVALID FOOD ID").show();
+            return  false;
+        }
+//
+        String nameText=txtName.getText();
+        boolean isnameValid= Pattern.compile("[A-Za-z]{3,}").matcher(nameText).matches();
+
+        if (!isnameValid){
+            new Alert(Alert.AlertType.ERROR,"WRONG NAME TYPE").show();
+        }
+        return true;
+
     }
 }

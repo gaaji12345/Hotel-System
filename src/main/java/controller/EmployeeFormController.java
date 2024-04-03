@@ -12,6 +12,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EmployeeFormController {
     public TextField txtUser;
@@ -144,12 +146,16 @@ public class EmployeeFormController {
             }
             // Validate email address
             //validateEmail(email);
-
-            // Save employee to database
-            boolean isSaved = employeeBo.addEmployee(new Employeedto(userId,id, name, gender, email, nic, address));
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Employee saved!").show();
-                getAllEmployee();
+            boolean isvalid=validateEmployee();
+            if(isvalid) {
+                // Save employee to database
+                boolean isSaved = employeeBo.addEmployee(new Employeedto(userId, id, name, gender, email, nic, address));
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Employee saved!").show();
+                    getAllEmployee();
+                }
+            }else {
+                new Alert(Alert.AlertType.WARNING, "Try Another Correct Informations..!").show();
             }
         } catch (IllegalArgumentException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -201,5 +207,45 @@ public class EmployeeFormController {
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "something went wrong!").show();
         }
+    }
+
+    public void validateEmail(String email) {
+        // Check if the email address is valid using a regular expression
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.com$";
+        if (!email.matches(emailRegex)) {
+            throw new IllegalArgumentException("Please enter a valid email address!");
+        }
+    }
+
+    private boolean validateEmployee() {
+        String id_value = txtId.getText();
+        Pattern complie = Pattern.compile("[C][0-9]{3}");
+        Matcher matcher = complie.matcher(id_value);
+        boolean matches = matcher.matches();
+        if (!matches) {
+            new Alert(Alert.AlertType.ERROR, "INVALID Employee ID").show();
+            return false;
+        }
+        String address = txtAddress.getText();
+        Pattern compile1 = Pattern.compile("[A-Z]");
+        Matcher matcher1 = compile1.matcher(address);
+        boolean isAddress = matcher1.matches();
+        if (!isAddress) {
+            new Alert(Alert.AlertType.ERROR, "WRONG ADDRSS TYPE").show();
+        }
+
+        String nameText = txtName.getText();
+        boolean isnameValid = Pattern.compile("[A-Za-z]{3,}").matcher(nameText).matches();
+
+        if (!isnameValid) {
+            new Alert(Alert.AlertType.ERROR, "WRONG NAME TYPE").show();
+        }
+
+        String email = txtEmail.getText();
+        boolean isemailvalidete = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.com$").matcher(email).matches();
+        if (!isemailvalidete) {
+            new Alert(Alert.AlertType.ERROR, "WRONG Email TYPE").show();
+        }
+        return true;
     }
 }

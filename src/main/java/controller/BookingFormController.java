@@ -22,6 +22,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BookingFormController {
     public AnchorPane root;
@@ -130,20 +132,26 @@ public class BookingFormController {
             String checkIn = selectedInDate.toString();
             LocalDate selectedOutDate = dchkOut.getValue();
             String checkOut = selectedOutDate.toString();
+            boolean isValidate = validateBook();
+            if (validateBook()) {
 
-            if (guestId.isEmpty() || bookingId.isEmpty() || bookingDate.isEmpty() || roomId.isEmpty() || checkIn.isEmpty() || checkOut.isEmpty()) {
-                throw new IllegalArgumentException("Please fill out all the required fields!");
+                if (guestId.isEmpty() || bookingId.isEmpty() || bookingDate.isEmpty() || roomId.isEmpty() || checkIn.isEmpty() || checkOut.isEmpty()) {
+                    throw new IllegalArgumentException("Please fill out all the required fields!");
+                }
+
+                boolean isSaved = bookingBo.addBooking(new Bookingdto(guestId, bookingId, bookingDate, roomId, checkIn, checkOut));
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Booking saved!").show();
+                    bookingBo.releaseRoom(roomId);
+                    loadallBooking();
+                }
+            }else {
+                new Alert(Alert.AlertType.ERROR,"WRONG BOOKIN ID");
+            }
+            } catch(IllegalArgumentException | SQLException e){
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
 
-            boolean isSaved = bookingBo.addBooking(new Bookingdto(guestId, bookingId, bookingDate, roomId, checkIn, checkOut));
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Booking saved!").show();
-                bookingBo.releaseRoom(roomId);
-                loadallBooking();
-            }
-        } catch (IllegalArgumentException | SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
     }
 
     public void update_OnAction(ActionEvent actionEvent) {
@@ -183,5 +191,17 @@ public class BookingFormController {
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "something went wrong!").show();
         }
+    }
+
+    private boolean validateBook() {
+        String id_value = txtbid.getText();
+        Pattern complie = Pattern.compile("[B][0-9]{3}");
+        Matcher matcher = complie.matcher(id_value);
+        boolean matches = matcher.matches();
+        if (!matches) {
+            new Alert(Alert.AlertType.ERROR, "INVALID BOOK ID").show();
+            return false;
+        }
+        return true;
     }
 }
