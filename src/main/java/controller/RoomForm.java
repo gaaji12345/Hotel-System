@@ -14,6 +14,8 @@ import javafx.scene.layout.AnchorPane;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RoomForm {
 
@@ -104,11 +106,16 @@ public class RoomForm {
             if (id.isEmpty() || details.isEmpty() || roomType.isEmpty()) {
                 throw new IllegalArgumentException("Please fill out all the required fields!");
             }
+            boolean isvalid=validateRoom();
+            if (isvalid) {
 
-            boolean isSaved = roomBo.addRoom(new Roomdto(id, details, roomType, price));
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Room saved!").show();
-                loadAllrooms();
+                boolean isSaved = roomBo.addRoom(new Roomdto(id, details, roomType, price));
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Room saved!").show();
+                    loadAllrooms();
+                }
+            }else {
+                new Alert(Alert.AlertType.ERROR,"ENTER RIGHT DETAILS..!").show();
             }
         } catch (IllegalArgumentException | SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -152,5 +159,24 @@ public class RoomForm {
         txtPrice.clear();
         txtdetail.clear();
         txtType.clear();
+    }
+    private boolean validateRoom() {
+        String id_value=txtId.getText();
+        Pattern complie=Pattern.compile("[R][0-9]{3}");
+        Matcher matcher=complie.matcher(id_value);
+        boolean matches=matcher.matches();
+        if (!matches){
+            new Alert(Alert.AlertType.ERROR,"INVALID FOOD ID").show();
+            return  false;
+        }
+//
+        String nameText=txtdetail.getText();
+        boolean isnameValid= Pattern.compile("[A-Za-z]{3,}").matcher(nameText).matches();
+
+        if (!isnameValid){
+            new Alert(Alert.AlertType.ERROR,"WRONG Detail TYPE").show();
+        }
+        return true;
+
     }
 }

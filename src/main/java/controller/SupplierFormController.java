@@ -12,6 +12,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SupplierFormController {
 
@@ -96,11 +98,16 @@ public class SupplierFormController {
             if (id.isEmpty() || name.isEmpty() || contact.isEmpty() || details.isEmpty()) {
                 throw new IllegalArgumentException("Please fill out all the required fields!");
             }
+            boolean isvalid=validateSupplier();
+            if (isvalid) {
 
-            boolean isSaved = supplierBo.addSupplier(new Supplierdto(id, name, contact, details));
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Supplier saved!").show();
-               getAllSuppliers();
+                boolean isSaved = supplierBo.addSupplier(new Supplierdto(id, name, contact, details));
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Supplier saved!").show();
+                    getAllSuppliers();
+                }
+            }else {
+                new Alert(Alert.AlertType.ERROR,"ENTER RIGHT DETAILS...!").show();
             }
         } catch (IllegalArgumentException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -144,5 +151,25 @@ public class SupplierFormController {
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "something went wrong!").show();
         }
+    }
+
+    private boolean validateSupplier() {
+        String id_value=txtid.getText();
+        Pattern complie=Pattern.compile("[S][0-9]{3}");
+        Matcher matcher=complie.matcher(id_value);
+        boolean matches=matcher.matches();
+        if (!matches){
+            new Alert(Alert.AlertType.ERROR,"INVALID FOOD ID").show();
+            return  false;
+        }
+//
+        String nameText=txtName.getText();
+        boolean isnameValid= Pattern.compile("[A-Za-z]{3,}").matcher(nameText).matches();
+
+        if (!isnameValid){
+            new Alert(Alert.AlertType.ERROR,"WRONG NAME TYPE").show();
+        }
+        return true;
+
     }
 }

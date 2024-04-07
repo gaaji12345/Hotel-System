@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class OrderFormController {
@@ -189,7 +191,10 @@ public class OrderFormController {
         calculateNetTotal();
     }
     private boolean saveOrder(String orderId, String date, String bookingId, List<OrderDetailsdto> orderDetails) {
-        return orderBO.saveOrder(new Orderdto(orderId, date, bookingId, orderDetails));
+     //   boolean isValdate = validateOrder();
+       // if (isValdate) {
+            return orderBO.saveOrder(new Orderdto(orderId, date, bookingId, orderDetails));
+
     }
 
     private String generateNewOrderId() {
@@ -243,5 +248,20 @@ public class OrderFormController {
     private void fillMealFields(Fooddto foodDTO) {
         lblFoodName.setText(foodDTO.getName());
         lblPrice.setText(String.valueOf(foodDTO.getPrice()));
+    }
+
+    private boolean validateOrder() {
+        String id_value=txtorderId.getText();
+        Pattern complie=Pattern.compile("[O][0-9]{3}");
+        Matcher matcher=complie.matcher(id_value);
+        boolean matches=matcher.matches();
+        if (!matches){
+            new Alert(Alert.AlertType.ERROR,"INVALID ODER ID").show();
+            return  false;
+        }
+//
+
+        return true;
+
     }
 }

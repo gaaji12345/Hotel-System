@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserController {
 
@@ -70,11 +72,15 @@ public class UserController {
             String title = txtPosstion.getText();
 
 
-
-            boolean isSaved = userBo.addUser(new Userdto(id, name, password, title));
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "User saved!").show();
-                loadallusers();
+            boolean isvalid=validateUser();
+            if (isvalid) {
+                boolean isSaved = userBo.addUser(new Userdto(id, name, password, title));
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "User saved!").show();
+                    loadallusers();
+                }
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Enter right Details").show();
             }
         } catch (IllegalArgumentException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -132,5 +138,25 @@ public class UserController {
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "something happened!").show();
         }
+    }
+
+    private boolean validateUser() {
+        String id_value=txtId.getText();
+        Pattern complie=Pattern.compile("[U][0-9]{3}");
+        Matcher matcher=complie.matcher(id_value);
+        boolean matches=matcher.matches();
+        if (!matches){
+            new Alert(Alert.AlertType.ERROR,"INVALID FOOD ID").show();
+            return  false;
+        }
+//
+        String nameText=txtName.getText();
+        boolean isnameValid= Pattern.compile("[A-Za-z]{3,}").matcher(nameText).matches();
+
+        if (!isnameValid){
+            new Alert(Alert.AlertType.ERROR,"WRONG NAME TYPE").show();
+        }
+        return true;
+
     }
 }

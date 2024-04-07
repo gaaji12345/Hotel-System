@@ -13,6 +13,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GuestFormController {
     public TextField txtUId;
@@ -145,12 +147,17 @@ public class GuestFormController {
             if (userId.isEmpty() || id.isEmpty() || name.isEmpty() || gender.isEmpty() || country.isEmpty() || zipcode.isEmpty() || passportId.isEmpty()) {
                 throw new IllegalArgumentException("Please fill out all the required fields!");
             }
+            boolean isValid=validateGuest();
+            if (isValid) {
 
-            // Save guest to database
-            boolean isSaved = guesBo.addGuest(new Guestdto(userId, id, name, gender, country, zipcode, passportId));
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Guest saved!").show();
-                loadAllGuest();
+                // Save guest to database
+                boolean isSaved = guesBo.addGuest(new Guestdto(userId, id, name, gender, country, zipcode, passportId));
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Guest saved!").show();
+                    loadAllGuest();
+                }
+            }else {
+                new Alert(Alert.AlertType.WARNING,"ENTER RIGHT DETAILS..!").show();
             }
         } catch (IllegalArgumentException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -204,5 +211,25 @@ public class GuestFormController {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "something went wrong!").show();
         }
+    }
+
+    private boolean validateGuest() {
+        String id_value=txtGid.getText();
+        Pattern complie=Pattern.compile("[G][0-9]{3}");
+        Matcher matcher=complie.matcher(id_value);
+        boolean matches=matcher.matches();
+        if (!matches){
+            new Alert(Alert.AlertType.ERROR,"INVALID GUEST ID").show();
+            return  false;
+        }
+//
+        String nameText=txtName.getText();
+        boolean isnameValid= Pattern.compile("[A-Za-z]{3,}").matcher(nameText).matches();
+
+        if (!isnameValid){
+            new Alert(Alert.AlertType.ERROR,"WRONG NAME TYPE").show();
+        }
+        return true;
+
     }
 }
