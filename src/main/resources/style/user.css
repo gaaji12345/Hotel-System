@@ -1,0 +1,12 @@
+#subpain2{
+    -fx-background-color: #6b1919;
+    -fx-background-radius: 10px;
+
+}
+
+#btnSave,#btnUpdate,#btnDelete{
+    -fx-background-color: rgb(24, 19, 19);
+    -fx-border-radius: 7px;
+    -fx-background-radius: 7px;
+    -fx-cursor: hand;
+}
